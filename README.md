@@ -34,28 +34,21 @@ This work is designed as a study exploration of the limits of classical simulati
 
 ```
 QuantumSimLab/
-│
-├── Adva_Quant_Inform/        # Core quantum simulation library
-│   ├── operators.py
-│   ├── hamiltonians.py
-│   ├── black_box.py
-│   ├── unitaries.py
-│   ├── plotting.py
-│   └── __init__.py
-│
-├── Notebooks/
-│   ├── Quantum Circuit Emulator.ipynb
-│   ├── Adiabatic Quantum Computing.ipynb
-│   ├── Shor’s Algorithm.ipynb
-│
-├── Solutions/
-│   ├── Quantum Circuit Emulator.ipynb
-│   ├── Adiabatic Quantum Computing.ipynb
-│
+├── src/
+│   └── Adva_Quant_Inform/
+│       ├── __init__.py
+│       ├── black_box.py
+│       ├── hamiltonians.py
+│       ├── operators.py
+│       ├── plotting.py
+│       └── unitaries.py
+├── .gitignore
+├── Adiabatic Quantum Computing.ipynb
 ├── LICENSE
+├── Quantum Circuit Emulator.ipynb
 ├── README.md
-├── pyproject.toml
-└── .gitignore 
+├── Shor's factoring algorithm.ipynb
+└── pyproject.toml 
 ```
 
 ---
