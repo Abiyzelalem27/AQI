@@ -3,3 +3,5 @@ __pycache__/
 .pytest_cache/
 .coverage
 *.egg-info/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
