@@ -1,5 +1,6 @@
 
 
+import math
 import numpy as np  
 import numpy.linalg as LA
 import scipy.linalg as sciLA
@@ -258,3 +259,163 @@ def sz_list(N):
         op_list[n] = sz
         sz_list_flag.append(tensor(op_list))
     return(sz_list_flag) 
+
+
+#################################### shor algorithms ##############################################
+
+def find_order_brute_force(x, N):
+    """
+    Find the multiplicative order of x modulo N using brute force.
+
+    The order r is the smallest positive integer such that:
+
+        x**r ≡ 1 mod N
+
+    This function is useful in number theory and in Shor's algorithm,
+    where finding the period/order helps factor a composite number N.
+
+   
+    Returns
+    -------
+    int or str
+        The order r if x and N are coprime.
+        Returns an error message if x and N are not coprime or if x = 1.
+    """
+    if math.gcd(x, N) != 1:
+        return "Error: x and N are not coprime"
+
+    if x == 1:
+        return "Error: x=1 is trivial"
+
+    r = 1
+    y = x
+
+    while y != 1:
+        y = (x * y) % N
+        r += 1
+
+    return r
+
+def try_find_factors(x, N):
+    """
+    find non-trivial factors of N using the order r of x modulo N.
+
+    This is the classical post-processing step used in Shor's algorithm.
+
+        x**r ≡ 1 mod N
+
+    If r is even and x**(r/2) is not congruent to -1 mod N,
+    then gcd(x**(r/2) - 1, N) and gcd(x**(r/2) + 1, N)
+    may give factors of N.
+
+    Parameters
+    ----------
+    x:The chosen base number.
+    N :The composite number to factor.
+
+    Returns
+    -------
+    list or str
+        A list of possible factors if successful.
+        Otherwise, an error message explaining why it failed.
+    """
+    r=find_order_brute_force(x,N)
+    if isinstance(r, str):
+        # passing on the error message thrown by order finding
+        return r
+    if r%2==0:
+        if pow(x,r//2,N)!=N-1:
+            # it worked! We have a factor!
+            guesses = [math.gcd(x**(r//2)-1, N), math.gcd(x**(r//2)+1, N)]
+            return guesses
+        else:
+            return "x^(r/2)=-1"
+    else:
+        return "r was odd"
+def Rk(k):
+    return array([[1, 0],
+                  [0, exp(1j*2*pi/2**k)]])
+
+
+def build_QFT(n):
+    QFT = sparse.identity(2**n)
+    for i in range(n):
+        QFT = buildSparseGateSingle(n, i, H) @ QFT
+        for j in range(i+1,n):
+            QFT = buildSparseCRk(n, j, i, j-i+1) @ QFT
+    for i in range(n//2):
+        QFT = buildSparseSwap(n, i, n-i-1) @ QFT
+    return QFT
+
+def build_invQFT(n):
+    QFT = sparse.identity(2**n)
+    # swaps
+    for i in range(n//2):
+        QFT = buildSparseSwap(n, i, n-i-1) @ QFT
+    # H and C-Rk
+    for i in range(n-1,-1,-1):
+        for j in range(n-1,i,-1):
+            QFT = buildSparseCRk(n, j, i, j-i+1).conjugate() @ QFT
+        QFT = buildSparseGateSingle(n, i, H) @ QFT
+    return QFT
+
+
+def apply_invQFT(n,Psi):
+     # swaps
+     for i in range(n//2):
+         Psi = buildSparseSwap(n, i, n-i-1) @ Psi
+     # H and C-Rk
+     for i in range(n-1,-1,-1):
+         for j in range(n-1,i,-1):
+             Psi = buildSparseCRk(n, j, i, j-i+1).conjugate() @ Psi
+         Psi = buildSparseGateSingle(n, i, H) @ Psi
+     return Psi
+
+# only apply the inverse QFT to the first n qubits. This is what will be needed for order finding!
+def apply_invQFT_reg1(n,Psi):
+    ntot = systemSizeFromState(Psi)
+    # swaps
+    for i in range(n//2):
+        Psi = buildSparseSwap(ntot, i, n-i-1) @ Psi
+    # H and C-Rk
+    for i in range(n-1,-1,-1):
+        for j in range(n-1,i,-1):
+            Psi = buildSparseCRk(ntot, j, i, j-i+1).conjugate() @ Psi
+        Psi = buildSparseGateSingle(ntot, i, H) @ Psi
+    return Psi
+    
+def qubits_for_number(N):
+    "Return minimum number of qubits needed to encode L"
+    return int(np.ceil(np.log2(N)))
+
+def build_x_tothe_z(t, x, N):
+    L = qubits_for_number(N)
+    dim1=2**t
+    dim2=2**L
+    dim=dim1*dim2
+    row=arange(dim) # indexes all rows
+    col=arange(dim) # will contain the position (col) of the non-zero entry for each row
+    for j in range(dim1): # loop over states of the first register
+        for y in range(dim2): # loop over states of the second register
+            if y < N: # if y>=N, we want the identity, so we leave the
+                # row index unchanged (it was initialized to be equal to the col index)
+                row[j*dim2+y]=j*dim2 + np.mod(y*pow(x,j,N),N)
+    return sparse.csr_matrix((np.ones(dim), (row, col))) 
+
+# solution
+
+def find_order(t, x, N):
+    L = qubits_for_number(N)
+    n=t+L
+    # initialize register
+    psi = initRegister(n)
+    # flip last qubit of second register to prepare the register in state |1>
+    psi = buildSparseGateSingle(n, n-1, X) @ psi
+    # apply Hadamards to the first register
+    for i in arange(t):
+        psi = buildSparseGateSingle(n,i,H) @ psi
+    # apply |z>|y> -> |z>|y*x^z mod N>
+    psi = build_x_tothe_z(t,x,N) @ psi
+    # apply inverse QFT to the first register
+    psi = apply_invQFT_reg1(t,psi)
+    return psi 
