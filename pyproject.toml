@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "Adva_Quant_Inform"
 version = "0.0.1"
-description = "Code repository of Advanced Quantum Information course (Summer Semester 2026)"
+description = "Code repository of Advanced Quantum Information"
 readme = "README.md"
 requires-python = ">=3.9"
 
