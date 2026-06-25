@@ -1,11 +1,9 @@
+"""
+Adva_Quant_Inform
 
+Tools for advanced quantum information simulations.
+"""
 
-from . import hamiltonians, unitaries, operators, plotting, black_box
+__version__ = "0.0.1"
 
-__all__ = [
-    "hamiltonians",
-    "unitaries",
-    "operators",
-    "plotting",
-    "black_box" 
-] 
+from .operators import find_order_brute_force, try_find_factors
