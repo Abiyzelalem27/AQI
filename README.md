@@ -1,38 +1,33 @@
 
 
+# QuantumSimLab
 
 [![CI](https://github.com/Abiyzelalem27/QuantumSimLab/actions/workflows/python_CI.yml/badge.svg)](https://github.com/Abiyzelalem27/QuantumSimLab/actions/workflows/python_CI.yml)
 
 [![codecov](https://codecov.io/github/Abiyzelalem27/QuantumSimLab/graph/badge.svg)](https://codecov.io/github/Abiyzelalem27/QuantumSimLab)
 
-# Classical Simulation of Quantum Circuits, Algorithms & Adiabatic Quantum Computing
 
-## 📌 Overview
-
-**QuantumSimLab** is a Python-based study framework developed from lecture material for simulating quantum computation on classical hardware.
-
-It provides tools for:
-
-- Quantum circuit simulation  
-- Sparse and dense gate construction  
-- Quantum algorithms (Deutsch–Jozsa, Bell states, etc.)  
-- Adiabatic quantum computing  
-- Spin-chain Hamiltonians  
-- Time-dependent quantum dynamics  
-- Measurement simulation  
-- Bloch sphere visualization  
-
----
+QuantumSimLab is an educational exploration of how quantum circuits, quantum algorithms, spin systems, and adiabatic quantum computing can be implemented and studied numerically using classical simulation methods.
 
 ## 🧪 Goal of the Study
 
-This work is designed as a study exploration of the limits of classical simulation of quantum systems, while implementing core concepts from quantum computing and quantum physics taught in lectures.
+Study-oriented exploration of the limits of classical simulation of quantum systems. It implements core concepts from quantum computing and quantum physics taught in lectures, with an emphasis on numerical experimentation and physical intuition.
 
----
+## ✨ Features
+
+* Sparse and dense quantum gate construction
+* Single-qubit and multi-qubit gate operations
+* Deutsch–Jozsa algorithm simulation
+* Shor-style order finding and factoring experiments
+* Quantum Fourier Transform and inverse Quantum Fourier Transform
+* Modular exponentiation for order finding
+* Adiabatic quantum computing simulations
+* Spin-chain Hamiltonians
+* Time-dependent quantum dynamics
 
 ## 📁 Repository Structure
 
-```
+```text
 QuantumSimLab/
 ├── src/
 │   └── Adva_Quant_Inform/
@@ -46,34 +41,29 @@ QuantumSimLab/
 ├── Adiabatic Quantum Computing.ipynb
 ├── LICENSE
 ├── Quantum Circuit Emulator.ipynb
-├── README.md
 ├── Shor's factoring algorithm.ipynb
-└── pyproject.toml 
+├── README.md
+└── pyproject.toml
 ```
-
----
 
 ## 📚 References
 
-* **Advanced Quantum Information Course**  
-  The Course taught by **Prof. Gärttner** at Friedrich Schiller University Jena  
-  (Quantum Information and Quantum Simulation / QIQS Group)
+* **Advanced Quantum Information Course**
+  Taught by **Prof. Gärttner** at Friedrich Schiller University Jena
+  Quantum Information and Quantum Simulation / QIQS Group
 
-* **Quantum Information and Quantum Simulation (QIQS) Group**  
-  Friedrich Schiller University Jena, Germany  
-  Research group and academic environment associated with the course.  
+* **Quantum Information and Quantum Simulation Group**
+  Friedrich Schiller University Jena, Germany
   Website: [qiqs-jena.de](https://qiqs-jena.de/)
 
-* **Nielsen & Chuang**  
+* **Nielsen & Chuang**
   *Quantum Computation and Quantum Information*
 
- * **QuTiP Documentation**  
+* **QuTiP Documentation**
   Website: [qutip.org/docs](https://qutip.org/docs/)
 
 ## 👤 Author
 
-* **Abiy Zelalem Tegegne**
+**Abiy Zelalem Tegegne**
 
-GitHub: [Abiyzelalem27](https://github.com/Abiyzelalem27) 
-
-
+GitHub: [Abiyzelalem27](https://github.com/Abiyzelalem27)
